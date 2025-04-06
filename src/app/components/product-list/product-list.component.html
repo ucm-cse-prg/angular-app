@@ -1,0 +1,14 @@
+<div class="product-list-container">
+    @for (product of products; track product.id) {
+    <div class="product-card">
+        <app-product-card [product]="product"></app-product-card>
+    </div>
+    }
+</div>
+
+<div class="create-product-container">
+    <button mat-fab extended class="create-product-link" (click)="createProduct()">
+        <mat-icon>add</mat-icon>
+        Add Product
+    </button>
+</div>

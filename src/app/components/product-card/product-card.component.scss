@@ -1,0 +1,27 @@
+.product-card {
+    padding: 0rem;
+}
+
+.product-card mat-card-content {
+    margin: 1rem 0;
+}
+
+.product-picture {
+    width: 100%;
+}
+
+.product-category-chip {
+    // position: absolute;
+    // top: 1.2rem;
+    // right: 4rem;
+}
+
+.product-card-menu-button {
+    position: absolute;
+    top: 1rem;
+    right: .5rem;
+}
+
+.product-card-content {
+    min-height: 2em;
+}
