@@ -12,11 +12,11 @@
                 <mat-icon>visibility</mat-icon>
                 <span>View Product</span>
             </button>
-            <button mat-menu-item>
+            <button mat-menu-item (click)="updateProduct()">
                 <mat-icon>edit</mat-icon>
                 <span>Edit Product</span>
             </button>
-            <button mat-menu-item>
+            <button mat-menu-item (click)="deleteProduct()">
                 <mat-icon>delete</mat-icon>
                 <span>Delete Procut</span>
             </button>
@@ -24,6 +24,6 @@
     </mat-card-header>
     <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
     <mat-card-actions>
-        <mat-chip class="product-category-chip" [matTooltip]="product().category.description || 'No description available'">{{ product().category.name }}</mat-chip>
+        <mat-chip class="product-category-chip" [matTooltip]="product().category.description || 'No description available'" selected disabled>{{ product().category.name }}</mat-chip>
     </mat-card-actions>
 </mat-card>

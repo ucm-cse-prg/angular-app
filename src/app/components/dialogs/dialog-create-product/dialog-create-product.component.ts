@@ -5,12 +5,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { ApiService } from '@core/services/api.service';
+import { ApiService } from '@app/services/api.service';
 import { DialogComponent } from '@app/shared/components/dialog/dialog.component';
 import { CreateProductRequest } from '@schemas/create-product-request'; // Adjust the import path as necessary
 
 @Component({
-    selector: 'app-dialog-view-product',
+    selector: 'app-dialog-create-product',
     imports: [
         DialogComponent, 
         MatFormFieldModule,

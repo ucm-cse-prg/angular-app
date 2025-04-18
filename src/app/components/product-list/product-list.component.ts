@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '@services/api.service';
+import { ApiService } from '@app/services/api.service';
 import { Product } from '@models/product';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -35,4 +35,19 @@ export class ProductListComponent implements OnInit {
             }
         });
 	}
+    
+    updateProduct(updated_product: Product) {
+        const index = this.products.findIndex(product => product.id === updated_product.id);
+        console.log(this.products[index]);
+        if (index !== -1) {
+            this.products[index] = updated_product;
+        }
+    }
+
+    deleteProduct(product: Product) {
+        const index = this.products.findIndex(p => p.id === product.id);
+        if (index !== -1) {
+            this.products.splice(index, 1);
+        }
+    }
 }

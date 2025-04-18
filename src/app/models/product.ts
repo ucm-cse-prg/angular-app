@@ -11,21 +11,9 @@ import { Category } from '@models/category';
 
 export interface Product {
     id: string;
-  
-    /**
-     * Description of the product
-     */
     description: string;
-  
-    /**
-     * Name of the product
-     */
     name: string;
-  
-    /**
-     * Price of the product
-     */
     price: number;
-    
     category: Category;
+    image?: string;
   }

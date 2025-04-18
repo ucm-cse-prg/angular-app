@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, model, output } from '@angular/core';
 
 import { MatButtonModule } from '@angular/material/button'; // Import Angular Material Button module
 import { MatCardModule } from '@angular/material/card'; 
@@ -9,8 +9,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
-import { ApiService } from '@app/core/services/api.service';
+import { ApiService } from '@app/services/api.service';
 import { DialogViewProductComponent } from '@components/dialogs/dialog-view-product/dialog-view-product.component';
+import { DialogUpdateProductComponent } from '../dialogs/dialog-update-product/dialog-update-product.component';
+import { DialogDeleteProductComponent } from '../dialogs/dialog-delete-product/dialog-delete-product.component';
 
 @Component({
   selector: 'app-product-card',
@@ -28,8 +30,10 @@ import { DialogViewProductComponent } from '@components/dialogs/dialog-view-prod
 })
 export class ProductCardComponent {
 
-    product = input.required<Product>();
-
+    image = model<string>();
+    product = model.required<Product>();
+    productUpdated = output<Product>();
+    productDeleted = output<Product>();
 
     constructor(
         private apiService: ApiService,
@@ -39,12 +43,35 @@ export class ProductCardComponent {
 
     viewProduct() {
 		const dialogRef = this.dialog.open(DialogViewProductComponent, { 
-			data: {
-				productId: this.product().id,
-			}
+			data: this.product()
 		});
 
 		dialogRef.afterClosed().subscribe();
 	}
+
+    updateProduct() {
+        const dialogRef = this.dialog.open(DialogUpdateProductComponent, { 
+            data: this.product()
+        });
+        
+        dialogRef.afterClosed().subscribe((updated_product: Product) => {
+            if (updated_product) {
+                // this.product.update(() => updated_product);
+                this.productUpdated.emit(updated_product);
+            }
+        });
+    }
+
+    deleteProduct() {
+        const dialogRef = this.dialog.open(DialogDeleteProductComponent, { 
+            data: this.product()
+        });
+        
+        dialogRef.afterClosed().subscribe((deleted_product: Product) => {
+            if (deleted_product) {
+                this.productDeleted.emit(deleted_product);
+            }
+        });
+    }
 }
 

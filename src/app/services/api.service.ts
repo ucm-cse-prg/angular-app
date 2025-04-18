@@ -8,6 +8,7 @@ import { GetProductResponse } from '@schemas/get-product-response';
 
 import { Product } from '@models/product';
 import { CreateProductRequest } from '@app/schemas/create-product-request';
+import { UpdateProductRequest } from '@app/schemas/update-product-request';
 
 const API_URL = 'http://0.0.0.0:8000'; // Replace with your actual API URL, make sure to not include a trailing slash
 
@@ -105,8 +106,8 @@ export class ApiService {
      *     Schemas.UpdateProductResponse: The updated product details.
      */
 
-    async updateProduct(productId: string, product: Product): Promise<Product> {
-        const response = await firstValueFrom(this.http.put<Product>(`${API_URL}/products/${productId}/`, product));
+    async updateProduct(productId: string, product: UpdateProductRequest): Promise<UpdateProductRequest> {
+        const response = await firstValueFrom(this.http.patch<UpdateProductRequest>(`${API_URL}/products/${productId}/`, product));
         return response;
     }
     

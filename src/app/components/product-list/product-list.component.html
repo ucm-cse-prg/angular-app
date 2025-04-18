@@ -1,14 +1,11 @@
 <div class="product-list-container">
     @for (product of products; track product.id) {
     <div class="product-card">
-        <app-product-card [product]="product"></app-product-card>
+        <app-product-card [product]="product" (onProductUpdate)="updateProduct(product)" (onProductDelete)="deleteProduct(product)"></app-product-card>
     </div>
     }
 </div>
 
-<div class="create-product-container">
-    <button mat-fab extended class="create-product-link" (click)="createProduct()">
+    <button mat-fab class="create-product-button" (click)="createProduct()">
         <mat-icon>add</mat-icon>
-        Add Product
     </button>
-</div>

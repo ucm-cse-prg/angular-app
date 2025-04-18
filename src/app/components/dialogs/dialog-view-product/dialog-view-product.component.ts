@@ -1,12 +1,17 @@
-import { Component, input, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject} from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { ApiService } from '@app/core/services/api.service';
+import { ApiService } from '@app/services/api.service';
 import { DialogComponent } from '@app/shared/components/dialog/dialog.component';
 import { Product } from '@app/models/product';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     selector: 'app-dialog-view-product',
@@ -15,20 +20,19 @@ import { Product } from '@app/models/product';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatIconModule
+    MatIconModule, 
+    MatCardModule, 
+    CommonModule, 
+    MatChipsModule, 
+    MatTooltipModule, 
+    MatMenuModule
 ],
     templateUrl: './dialog-view-product.component.html',
     styleUrl: './dialog-view-product.component.scss'
 })
-export class DialogViewProductComponent implements OnInit {
-
-    // Product ID input
-    productId = input.required<string>();
-
-    product!: Product;
+export class DialogViewProductComponent{
 
     // Define the dialog configuration
-	title = "Create new product";
 	buttons = [
 		{
 			text: "close",
@@ -40,15 +44,10 @@ export class DialogViewProductComponent implements OnInit {
 	constructor(
 		private apiService: ApiService,
 		private dialog: MatDialogRef<DialogViewProductComponent>,
+        @Inject(MAT_DIALOG_DATA) public product: Product 
 		// private snackBarService: SnackBarService
 	) {
+        this.product.image = this.product.image || 'https://via.placeholder.com/150';
         
-    }
-
-    async ngOnInit() {
-        console.log(this.productId());
-        const r = await this.apiService.getProduct(this.productId());
-        this.product = r;
-        console.log(r);
     }
 }

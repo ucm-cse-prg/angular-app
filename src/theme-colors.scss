@@ -204,7 +204,7 @@ $tertiary-palette: map.merge(map.get($_palettes, tertiary), $_rest);
     @include mat.theme-overrides(( 
         primary: #0F2D52,
         // primary: #DAA900,
-        on-primary: #003354,
+        on-primary: #0F2D52,
         primary-container: #ffffff,
         on-primary-container: #0F2D52,
         inverse-primary: #DAA900,
