@@ -9,7 +9,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
-import { ApiService } from '@app/services/api.service';
+// import { ApiService } from '@app/services/api.service';
 import { DialogViewProductComponent } from '@components/dialogs/dialog-view-product/dialog-view-product.component';
 import { DialogUpdateProductComponent } from '../dialogs/dialog-update-product/dialog-update-product.component';
 import { DialogDeleteProductComponent } from '../dialogs/dialog-delete-product/dialog-delete-product.component';
@@ -36,7 +36,7 @@ export class ProductCardComponent {
     productDeleted = output<Product>();
 
     constructor(
-        private apiService: ApiService,
+        // private apiService: ApiService,
         private dialog: MatDialog
     ) { }
 
