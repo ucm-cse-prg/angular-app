@@ -10,7 +10,7 @@ import { Product } from '@models/product';
 import { CreateProductRequest } from '@app/schemas/create-product-request';
 import { UpdateProductRequest } from '@app/schemas/update-product-request';
 
-const API_URL = 'http://0.0.0.0:8000'; // Replace with your actual API URL, make sure to not include a trailing slash
+const API_URL = 'http://localhost:8000'; // Replace with your actual API URL, make sure to not include a trailing slash
 
 
 @Injectable({ providedIn: 'root' })
