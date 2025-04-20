@@ -9,5 +9,6 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-
+    title = 'My Angular App';
+    logo = 'UCM_Logo.svg';
 }
