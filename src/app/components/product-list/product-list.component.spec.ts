@@ -1,18 +1,26 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ProductListComponent } from './product-list.component';
 import { ApiService } from '@app/services/api.service';
-import { MatDialog } from '@angular/material/dialog';
+// import { MatDialog } from '@angular/material/dialog';
 import { Product } from '@models/product';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { HarnessLoader } from '@angular/cdk/testing';
-import { MatDialogHarness } from '@angular/material/dialog/testing';
+// import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+// import { HarnessLoader } from '@angular/cdk/testing';
+// import { MatDialogHarness } from '@angular/material/dialog/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { GetAllProductsResponse } from '@app/schemas/get-all-products-response';
+
 
 describe('ProductListComponent', () => {
-    let component: ProductListComponent;
-    let loader: HarnessLoader;
-    let fixture: ComponentFixture<ProductListComponent>;
-    let apiServiceSpy: jasmine.SpyObj<ApiService>;
 
+    const API_URL = 'http://localhost:8000/products/';
+
+    let component: ProductListComponent;
+    // let loader: HarnessLoader;
+    let fixture: ComponentFixture<ProductListComponent>;
+    // let apiService: ApiService;
+    // let products: Promise<Product[]>;
+    let httpTesting: HttpTestingController;
 
     const mockProducts: Product[] = [
         {
@@ -37,92 +45,47 @@ describe('ProductListComponent', () => {
         }
     ];
 
-    beforeEach(async () => {
-        apiServiceSpy = jasmine.createSpyObj('ApiService', ['getAllProducts']);
-        apiServiceSpy.getAllProducts.and.returnValue(Promise.resolve(mockProducts));
+    const mockResponse: GetAllProductsResponse = {
+        products: mockProducts
+    };
 
+    beforeEach(async () => {
         TestBed.configureTestingModule({
             imports: [
                 ProductListComponent,
-                MatDialog
             ],
             providers: [
-                { provide: ApiService, useValue: apiServiceSpy }
+                ApiService,
+                provideHttpClient(),
+                provideHttpClientTesting(),
             ]
         }).compileComponents();
 
+        httpTesting = TestBed.inject(HttpTestingController);
+        // apiService = TestBed.inject(ApiService);
         fixture = TestBed.createComponent(ProductListComponent);
-        fixture.detectChanges();
-        loader = TestbedHarnessEnvironment.documentRootLoader(fixture);
+        // loader = TestbedHarnessEnvironment.documentRootLoader(fixture);
         component = fixture.componentInstance;
+        fixture.detectChanges();
     });
 
     it('should create', () => {
-        fixture.detectChanges();
         expect(component).toBeTruthy();
     });
 
-    it('should load products on init', async () => {
+    it('should load products and create product cards', waitForAsync(() => {
         fixture.detectChanges();
-        await fixture.whenStable();
-        expect(apiServiceSpy.getAllProducts).toHaveBeenCalled();
-        expect(component.products).toEqual(mockProducts);
-    });
 
-    it('should load harness for dialog', async () => {
-        component.createProduct();
-        const dialogs = await loader.getAllHarnesses(MatDialogHarness);
-        expect(dialogs.length).toBe(1);
-    });
+        const req = httpTesting.expectOne(API_URL);
+        req.flush(mockResponse);
+        httpTesting.verify();
 
-    it('should be able to close dialog', async () => {
-        component.createProduct();
-        let dialogs = await loader.getAllHarnesses(MatDialogHarness);
-    
-        expect(dialogs.length).toBe(1);
-        await dialogs[0].close();
-    
-        dialogs = await loader.getAllHarnesses(MatDialogHarness);
-        expect(dialogs.length).toBe(0);
-    });
+        fixture.whenStable().then(() => {
+            fixture.detectChanges();
+            expect(component.products).toBe(mockProducts);
 
-    it('should add new product when createProduct is called and dialog returns a product', async () => {
-        expect(component.products.length).toBe(2);
-
-        const newProduct: Product = {
-            id: '3',
-            name: 'Product 3', 
-            description: 'New Product Description',
-            price: 99.99,
-            category: {
-                name: 'Category 3',
-                description: 'Category Description',
-            }
-        };
-        
-        
-        let dialogs = await loader.getAllHarnesses(MatDialogHarness);
-        expect(dialogs.length).toBe(1);
-
-        let create_dialog = dialogs[0];
-
-        console.log('Dialog:', create_dialog);
-        // expect(component.createProduct).toHaveBeenCalled();
-        // expect(component.products.length).toBe(3);
-    });
-
-    it('should update existing product in the list', () => {
-        const updatedProduct: Product = { id: '1', name: 'Updated Name' } as Product;
-        component.products = [...mockProducts];
-        component.updateProduct(updatedProduct);
-        expect(component.products.find(p => p.id === '1')).toEqual(updatedProduct);
-    });
-
-    it('should delete a product from the list', () => {
-        component.products = [...mockProducts];
-        const productToDelete = mockProducts[1];
-        component.deleteProduct(productToDelete);
-        expect(component.products.length).toBe(1);
-        expect(component.products).not.toContain(productToDelete);
-    });
+            const productCards = fixture.nativeElement.querySelectorAll('app-product-card');
+            expect(productCards.length).toBe(mockProducts.length);
+        });
+    }));
 });

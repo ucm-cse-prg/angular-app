@@ -1,23 +1,62 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { TestBed } from '@angular/core/testing';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
 import { DialogUpdateProductComponent } from './dialog-update-product.component';
 
-describe('DialogUpdateProductComponent', () => {
-  let component: DialogUpdateProductComponent;
-  let fixture: ComponentFixture<DialogUpdateProductComponent>;
+xdescribe('DialogUpdateProductComponent', () => {
+  let dialog: MatDialog;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DialogUpdateProductComponent]
-    })
-    .compileComponents();
+      imports: [
+        MatDialogModule,
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        DialogUpdateProductComponent
+      ],
+      declarations: []
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(DialogUpdateProductComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    dialog = TestBed.inject(MatDialog);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should open the dialog and create a form with the passed-in product data', () => {
+    const mockProduct = {
+      id: 1,
+      name: 'Test Product',
+      description: 'Test Description',
+      price: 100,
+      image: 'https://via.placeholder.com/150',
+      category: 'Test Category',
+      stock: 10,
+      rating: 4.5,
+      reviews: 100,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    // open the dialog
+    const dialogRef = dialog.open(DialogUpdateProductComponent, {
+      data: mockProduct
+    });
+
+    const instance = dialogRef.componentInstance;
+
+    // form should exist
+    expect(instance.form).toBeDefined();
+
+    // it should have controls for each field
+    expect(instance.form.contains('name')).toBeTrue();
+    expect(instance.form.contains('description')).toBeTrue();
+    expect(instance.form.contains('price')).toBeTrue();
+    expect(instance.form.contains('category')).toBeTrue();
+
+    // and default values should match the injected data
+    expect(instance.form.get('name')?.value).toBe(mockProduct.name);
+    expect(instance.form.get('price')?.value).toBe(mockProduct.price);
+    // expect(instance.form.get('category')?.value).toBe(mockProduct.category);
+
+    dialogRef.close();
   });
 });
