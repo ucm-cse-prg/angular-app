@@ -24,7 +24,7 @@ import { SnackBarService } from '@app/services/snackbar.service';
                                 this.router.navigate(['/not-found'], { state: { error: error.error }, skipLocationChange: true });
                                 break;
                             case 422:
-                                console.log('422 error:', error);
+                                // console.log('422 error:', error);
                                 this.snackBar.openSnackBar(error.error.detail[0].msg, 'Close', 'error');
                                 break;
                             default:
