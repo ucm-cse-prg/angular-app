@@ -1,43 +1,31 @@
 import { TestBed } from '@angular/core/testing';
-import { SnackbarComponent } from '@shared/snackbar/snackbar.component';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { SnackBarService } from './snackbar.service';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('SnackBarService', () => {
-    let service: SnackBarService;
-    let snackBar: SnackbarComponent;
+  let service: SnackBarService;
+  let matSnackBar: MatSnackBar;
 
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            imports: [NoopAnimationsModule],
-            providers: [
-                SnackBarService,
-                SnackbarComponent
-            ]
-        });
-        service = TestBed.inject(SnackBarService);
-        snackBar = TestBed.inject(SnackbarComponent);
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ MatSnackBarModule ],
+      providers: [ SnackBarService ]
     });
+    service = TestBed.inject(SnackBarService);
+    matSnackBar = TestBed.inject(MatSnackBar);
+  });
 
-    it('should be created', () => {
-        expect(SnackBarService).toBeTruthy();
+  it('should be created', () => {
+    expect(SnackBarService).toBeTruthy();
+  });
+  
+  it('should open a snackbar with the correct message and action', () => {
+    const spy = spyOn(matSnackBar, 'open').and.stub();
+    service.openSnackBar('Hi', 'Undo', 'error');
+    expect(spy).toHaveBeenCalledWith('Hi', 'Undo', {
+      duration: 3000,
+      verticalPosition: 'top',
+      panelClass: 'snackbar-error'
     });
-    
-    it('should open a snackbar with the correct message and action', async() => {
-        const message = 'Test message';
-        const action = 'Test action';
-        const color = 'error';
-
-        const spy = spyOn(snackBar, 'open').and.stub();
-
-        service.openSnackBar(message, action, color);
-
-        expect(spy.calls.count()).toBe(1);
-        expect(spy).toHaveBeenCalled();
-        expect(spy).toHaveBeenCalledWith(message, action, {
-            duration: 3000,
-            verticalPosition: 'top',
-            panelClass: 'snackbar-' + color,
-        });
-    });
+  });
 });
