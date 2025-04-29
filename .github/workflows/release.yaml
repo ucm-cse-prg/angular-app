@@ -43,7 +43,7 @@ jobs:
         npm ci
         npm run build
     - name: Build a tarball
-      run: tar -C dist -czf dist/${{github.repository}}.tar.gz unipoll-app
+      run: tar -C dist -czf dist/${{github.repository}}.tar.gz ${{github.repository}}
     - name: Semantic Release
       id: semantic
       uses: cycjimmy/semantic-release-action@v4
