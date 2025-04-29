@@ -1,8 +1,11 @@
 <div class="product-list-container">
     @for (product of products; track product.id) {
     <div class="product-card">
-        <app-product-card [product]="product" (onProductUpdate)="updateProduct(product)"
-            (onProductDelete)="deleteProduct(product)"></app-product-card>
+        <app-product-card
+            [product]="product"
+            (productUpdated)="updateProduct($event)"
+            (productDeleted)="deleteProduct($event)">
+        </app-product-card>
     </div>
     }
 </div>

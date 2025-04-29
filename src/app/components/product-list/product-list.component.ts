@@ -38,7 +38,6 @@ export class ProductListComponent implements OnInit {
     
     updateProduct(updated_product: Product) {
         const index = this.products.findIndex(product => product.id === updated_product.id);
-        console.log(this.products[index]);
         if (index !== -1) {
             this.products[index] = updated_product;
         }
