@@ -27,7 +27,7 @@ xdescribe('DialogUpdateProductComponent', () => {
       name: 'Test Product',
       description: 'Test Description',
       price: 100,
-      image: 'https://via.placeholder.com/150',
+      image: 'https://material.angular.io/assets/img/examples/shiba2.jpg',
       category: 'Test Category',
       stock: 10,
       rating: 4.5,

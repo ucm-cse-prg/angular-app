@@ -47,7 +47,7 @@ export class DialogViewProductComponent{
         @Inject(MAT_DIALOG_DATA) public product: Product 
 		// private snackBarService: SnackBarService
 	) {
-        this.product.image = this.product.image || 'https://via.placeholder.com/150';
-        
+        // For testing purposes
+        this.product.image = this.product.image || 'https://material.angular.io/assets/img/examples/shiba2.jpg';
     }
 }
